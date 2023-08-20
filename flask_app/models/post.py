@@ -1,8 +1,8 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from flask_app.models import user
+import datetime
 db = "interestnook"
-
 class Post:
     def __init__(self, data):
         self.id = data['id']
@@ -13,6 +13,8 @@ class Post:
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
         self.creator = None
+        self.comments = []
+        self.likes = []
     @classmethod
     def get_all(cls):
         query="SELECT * FROM posts ORDER BY date_time;"
@@ -45,3 +47,28 @@ class Post:
     def save(cls, data):
         query = "INSERT INTO posts (event_name, description, location, date_time, user_id) VALUES (%(name)s, %(description)s, %(location)s, %(date)s);"
         return connectToMySQL(db).query_db(query, data)
+    @classmethod
+    def get_one(cls, data):
+        query = "SELECT * FROM posts WHERE id = %(id)s;"
+        results = connectToMySQL(db).query_db(query, data)
+        return cls(results[0])
+    def update(cls, data):
+        query = "UPDATE posts SET event_name=%(name)s, description=%(description)s, location=%(location)s,date_time=%(date)s, updated_at = NOW() WHERE id = %(id)s;"
+        return connectToMySQL(db).query_db(query,data)
+    @classmethod
+    def destroy(cls,data):
+        query = "DELETE FROM posts WHERE id = %(id)s;"
+        return connectToMySQL(db).query_db(query,data)
+    @staticmethod
+    def validate_post(data):
+        is_valid = True
+        if len(data['name']) < 2:
+            flash("Event name must be at least 2 characters.")
+            is_valid = False
+        if len(data['description']) < 5:
+            flash("Description for event must be at least 5 characters")
+            is_valid = False
+        if len(data['location']) < 2:
+            flash("Location must be at least 2 characters")
+            is_valid = False
+        
