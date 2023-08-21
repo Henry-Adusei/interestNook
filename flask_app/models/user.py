@@ -31,7 +31,7 @@ class User:
         return users
     @classmethod
     def get_user_with_posts(cls,data):
-        query = "SELECT * FROM users LEFT JOIN posts on posts.user_id = users.id WHERE users.id = %(id)s;"
+        query = "SELECT * FROM users LEFT JOIN posts on posts.user_id = users.id WHERE users.id = %(id)s ORDER BY date_time DESC;"
         results = connectToMySQL(db).query_db(query, data)
         user = cls(results[0])
         for row in results:

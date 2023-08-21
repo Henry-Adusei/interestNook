@@ -25,7 +25,7 @@ class Post:
         return posts
     @classmethod
     def get_all_posts_with_creator(cls):
-        query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time;"
+        query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time DESC;"
         results = connectToMySQL(db).query_db(query)
         all_posts = []
         for row in results:

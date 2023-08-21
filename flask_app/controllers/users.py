@@ -35,7 +35,7 @@ def show_dash():
         "id": session['user_id']
     }
     print(session['user_id'])
-    return render_template("dashboard.html", user = user.User.get_user_with_posts(data))
+    return render_template("dashboard.html", user = user.User.get_user_with_posts(data), posts = post.Post.get_all_posts_with_creator())
 @app.route("/login/user", methods = ["POST"])
 def check_login():
     # see if the username provided exists in the database
