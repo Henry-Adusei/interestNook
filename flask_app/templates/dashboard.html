@@ -23,7 +23,7 @@
         <a class="navbar-brand">InterestNook</a>
         <h2>Welcome, {{user.first_name}}!!</h2>
         <form class="form-inline my-2 my-lg-0">
-            <a href="/events/new" class="btn btn-outline-success mr-3">Add Event</a>
+            <a href="/posts/new" class="btn btn-outline-success mr-3">Add Event</a>
             <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search">
             <a href="/clear" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
         </form>
@@ -37,12 +37,16 @@
                     <div class="card-header">
                         Your Events
                     </div>
+                    {% for post in user.posts %}
                     <div class="card-body">
-                        <p>Input Event Here</p>
+                        <p>{{ post.event_name}}</p>
+                        <p>{{ post.location}}</p>
+                        <p>{{ post.description}}</p>
                         <a href="#" class="btn btn-primary">Like</a>
                         <a href="#" class="btn btn-primary">View</a>
                         <a href="#" class="btn btn-primary">Comment</a>
                     </div>
+                    {% endfor %}
                 </div>
             </div>
             <div class="col-md-6">

@@ -45,7 +45,7 @@ class Post:
         return all_posts
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO posts (event_name, description, location, date_time, user_id) VALUES (%(name)s, %(description)s, %(location)s, %(date)s);"
+        query = "INSERT INTO posts (event_name, description, location, date_time, user_id) VALUES (%(name)s, %(description)s, %(location)s, %(date)s, %(user_id)s);"
         return connectToMySQL(db).query_db(query, data)
     @classmethod
     def get_one(cls, data):
@@ -71,4 +71,5 @@ class Post:
         if len(data['location']) < 2:
             flash("Location must be at least 2 characters")
             is_valid = False
+        return is_valid
         

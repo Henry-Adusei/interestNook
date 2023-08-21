@@ -5,4 +5,4 @@ load_dotenv('secret.env')
 secret_key = os.getenv('secret_key')
 print(secret_key)
 app = Flask(__name__)
-app.secret_key = secret_key
+app.secret_key = "secret_key"

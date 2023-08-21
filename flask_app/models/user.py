@@ -1,5 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
+from flask_app.models import post
 import datetime
 import re
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
@@ -28,6 +29,25 @@ class User:
         for user in results:
             users.append( cls(user) )
         return users
+    @classmethod
+    def get_user_with_posts(cls,data):
+        query = "SELECT * FROM users LEFT JOIN posts on posts.user_id = users.id WHERE users.id = %(id)s;"
+        results = connectToMySQL(db).query_db(query, data)
+        user = cls(results[0])
+        for row in results:
+            post_data = {
+                "id": row['posts.id'],
+                "event_name": row['event_name'],
+                "description": row['description'],
+                "location": row['location'],
+                "date_time": row['date_time'],
+                "created_at": row['posts.created_at'],
+                "updated_at": row['posts.updated_at']
+            }
+            new_post = post.Post(post_data)
+            new_post.creator = user
+            user.posts.append(new_post)
+        return user
     @classmethod
     def save(cls, data):
         query = "INSERT INTO users ( first_name, last_name, email, password) VALUES (%(fname)s, %(lname)s, %(email)s, %(password)s);"
