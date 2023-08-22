@@ -39,11 +39,11 @@
                     </div>
                     {% for post in user.posts %}
                     <div class="card-body">
-                        <p>{{ post.event_name}}</p>
+                        <p>{{ post.event_name}} by {{user.first_name}}</p>
                         <p>{{ post.location}}</p>
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
-                        <p>{{post.likes}}</p>
+                        <p>Likes: {{post.likes}}</p>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
                         <a href="#" class="btn btn-primary">Comment</a>
                         <a href="#" class="btn btn-primary">Edit</a>
@@ -60,7 +60,7 @@
                     {% for post in posts %}
                     <div class="card-body">
                     {% if post.creator.id != user.id %}
-                        <p>{{ post.event_name}}</p>
+                        <p>{{ post.event_name}} by {{post.creator.first_name}}</p>
                         <p>{{ post.location}}</p>
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
@@ -68,8 +68,9 @@
                         <a href="#" class="btn btn-success">Join Event</a>
                         <a href="#" class="btn btn-danger">Leave</a>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
-                        <a href="#" id="likeButton_{{ post.id }}" class="btn btn-primary" onclick="likePost({{post.id}})">Like</a>
-                        <span id="likeCount_{{ post.id }}">{{ like_data.get(post.id, 0) }}</span> Likes
+                        <a href = "/like/{{post.id}}" class="btn btn-primary">Like</a>
+                        <!-- <a href="#" id="likeButton_{{ post.id }}" class="btn btn-primary" onclick="likePost(post.id)">Like</a>
+                        <span id="likeCount_{{ post.id }}">{{ like_data.get(post.id, 0) }}</span> Likes -->
                     {% endif %}
                     {% endfor %}
                     </div>

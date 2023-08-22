@@ -28,6 +28,15 @@ def show_post(post_id):
         return redirect('/')
     data = {'id': post_id}
     return render_template('view_event.html', post = post.Post.get_one(data))
+@app.route('/like/<int:post_id>')
+def add_like(post_id):
+    if 'user_id' not in session:
+        flash("Must login or register")
+        return redirect('/')
+    data = {'user_id': session['user_id'], 'post_id': post_id}
+    post.Post.add_like(data)
+    return redirect('/dash')
+
     
 
 

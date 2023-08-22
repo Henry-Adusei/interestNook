@@ -46,9 +46,10 @@ class User:
             }
             new_post = post.Post(post_data)
             new_post.creator = user
-            query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {new_post.id};"
-            results2 = connectToMySQL(db).query_db(query2)
-            new_post.likes = results2[0]['likes']
+            if(row['posts.id'] != None):
+                query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {new_post.id};"
+                results2 = connectToMySQL(db).query_db(query2)
+                new_post.likes = results2[0]['likes']
             user.posts.append(new_post)
         return user
     @classmethod
