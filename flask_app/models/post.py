@@ -5,7 +5,7 @@ import datetime
 db = "interestnook"
 class Post:
     def __init__(self, data):
-        self.id = data['id']
+        self.posts_id = data['posts_id']
         self.event_name = data['event_name']
         self.description = data['description']
         self.location = data['location']
@@ -15,6 +15,7 @@ class Post:
         self.creator = None
         self.comments = []
         self.likes = []
+
     @classmethod
     def get_all(cls):
         query="SELECT * FROM posts ORDER BY date_time;"
@@ -23,6 +24,7 @@ class Post:
         for post in results:
             posts.append(cls(post))
         return posts
+    
     @classmethod
     def get_all_posts_with_creator(cls):
         query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time;"
@@ -43,22 +45,36 @@ class Post:
             one_post.creator = new_creator
             all_posts.append(one_post)
         return all_posts
+    
     @classmethod
     def save(cls, data):
         query = "INSERT INTO posts (event_name, description, location, date_time, user_id) VALUES (%(name)s, %(description)s, %(location)s, %(date)s, %(user_id)s);"
         return connectToMySQL(db).query_db(query, data)
+    
     @classmethod
     def get_one(cls, data):
-        query = "SELECT * FROM posts WHERE id = %(id)s;"
+        query = "SELECT * FROM posts WHERE posts_id = %(posts_id)s;"
         results = connectToMySQL(db).query_db(query, data)
         return cls(results[0])
+    
     def update(cls, data):
-        query = "UPDATE posts SET event_name=%(name)s, description=%(description)s, location=%(location)s,date_time=%(date)s, updated_at = NOW() WHERE id = %(id)s;"
+        query = """
+        UPDATE posts 
+        SET 
+        event_name=%(event_name)s,
+        description=%(description)s,
+        location=%(location)s,
+        date_time=%(date)s,
+        updated_at = NOW()
+        WHERE posts_id = %(posts_id)s;
+        """
         return connectToMySQL(db).query_db(query,data)
+    
     @classmethod
     def destroy(cls,data):
-        query = "DELETE FROM posts WHERE id = %(id)s;"
+        query = "DELETE FROM posts WHERE posts_id = %(posts_id)s;"
         return connectToMySQL(db).query_db(query,data)
+    
     @staticmethod
     def validate_post(data):
         is_valid = True
