@@ -43,10 +43,11 @@
                         <p>{{ post.location}}</p>
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
-                        <a href="#" id="likeButton_{{ post.id }}" class="btn btn-primary" onclick="likePost({{post.id}})">Like</a>
+                        <p>{{post.likes}}</p>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
                         <a href="#" class="btn btn-primary">Comment</a>
-                        <span id="likeCount_{{ post.id }}">{{ like_data.get(post.id, 0) }}</span> Likes
+                        <a href="#" class="btn btn-primary">Edit</a>
+                        <a href="#" class="btn btn-primary">Delete</a>
                     </div>
                     {% endfor %}
                 </div>
@@ -63,9 +64,12 @@
                         <p>{{ post.location}}</p>
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
+                        <p>Likes: {{post.likes}}</p>
                         <a href="#" class="btn btn-success">Join Event</a>
                         <a href="#" class="btn btn-danger">Leave</a>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
+                        <a href="#" id="likeButton_{{ post.id }}" class="btn btn-primary" onclick="likePost({{post.id}})">Like</a>
+                        <span id="likeCount_{{ post.id }}">{{ like_data.get(post.id, 0) }}</span> Likes
                     {% endif %}
                     {% endfor %}
                     </div>

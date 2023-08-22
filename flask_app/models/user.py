@@ -14,7 +14,7 @@ class User:
         self.email = data['email']
         self.password = data['password']
         self.created_at = data['created_at']
-        # self.updated_at = data['updated_at']
+        self.updated_at = data['updated_at']
         self.posts = []
         self.comments = []
         self.likes = []
@@ -42,10 +42,13 @@ class User:
                 "location": row['location'],
                 "date_time": row['date_time'],
                 "created_at": row['posts.created_at'],
-                # "updated_at": row['posts.updated_at']
+                "updated_at": row['posts.updated_at']
             }
             new_post = post.Post(post_data)
             new_post.creator = user
+            query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {new_post.id};"
+            results2 = connectToMySQL(db).query_db(query2)
+            new_post.likes = results2[0]['likes']
             user.posts.append(new_post)
         return user
     @classmethod

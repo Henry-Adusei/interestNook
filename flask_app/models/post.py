@@ -11,10 +11,10 @@ class Post:
         self.location = data['location']
         self.date_time = data['date_time']
         self.created_at = data['created_at']
-        # self.updated_at = data['updated_at']
+        self.updated_at = data['updated_at']
         self.creator = None
         self.comments = []
-        self.likes = []
+        self.likes = None
     @classmethod
     def get_all(cls):
         query="SELECT * FROM posts ORDER BY date_time;"
@@ -27,6 +27,8 @@ class Post:
     def get_all_posts_with_creator(cls):
         query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time DESC;"
         results = connectToMySQL(db).query_db(query)
+        query2 = "SELECT COUNT(id) AS likes, post_id FROM likes GROUP by post_id;"
+        results2 = connectToMySQL(db).query_db(query2)
         all_posts = []
         for row in results:
             one_post = cls(row)
@@ -37,10 +39,13 @@ class Post:
                 "email": row['email'],
                 "password": row['password'],
                 "created_at": row['users.created_at'],
-                # "updated_at": row['users.updated_at']
+                "updated_at": row['users.updated_at']
             }
             new_creator = user.User(one_post_creator_info)
             one_post.creator = new_creator
+            for row2 in results2:
+                if(one_post.id == row2['post_id']):
+                    one_post.likes = row2['likes']
             all_posts.append(one_post)
         return all_posts
     @classmethod
