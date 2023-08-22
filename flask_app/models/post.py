@@ -11,7 +11,7 @@ class Post:
         self.location = data['location']
         self.date_time = data['date_time']
         self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        # self.updated_at = data['updated_at']
         self.creator = None
         self.comments = []
         self.likes = []
@@ -37,7 +37,7 @@ class Post:
                 "email": row['email'],
                 "password": row['password'],
                 "created_at": row['users.created_at'],
-                "updated_at": row['users.updated_at']
+                # "updated_at": row['users.updated_at']
             }
             new_creator = user.User(one_post_creator_info)
             one_post.creator = new_creator
