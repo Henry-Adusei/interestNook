@@ -57,9 +57,13 @@ class Post:
         query = "SELECT * FROM posts WHERE id = %(id)s;"
         results = connectToMySQL(db).query_db(query, data)
         post = cls(results[0])
-        print(results[0]['user_id'])
         data = {"id": results[0]['user_id']}
         post.creator = user.User.get_one(data)
+        query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {post.id};"
+        results2 = connectToMySQL(db).query_db(query2)
+        print(results2)
+        if(results2[0]['likes'] != None):
+            post.likes = results2[0]['likes']
         return post
     def update(cls, data):
         query = "UPDATE posts SET event_name=%(name)s, description=%(description)s, location=%(location)s,date_time=%(date)s, updated_at = NOW() WHERE id = %(id)s;"
