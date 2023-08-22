@@ -28,6 +28,18 @@ class Comments:
         results = connectToMySQL(db).query_db(query, data)
         return results
 
+    @classmethod
+    def get_post_and_comments_by_user_id(cls,data):
+        query = 'SELECT * FROM users LEFT JOIN posts ON posts.user_id = users.id LEFT JOIN comments ON comments.user_id = users.id WHERE users.id = %(id)s;'
+        results = connectToMySQL(db).query_db(query, data)
+        return results
+
+    @classmethod
+    def get_comments_by_post_id(cls,data):
+        query = 'SELECT * FROM comments JOIN posts ON comments.post_id = posts.id'
+        results = connectToMySQL(db).query_db(query, data)
+        return results
+
     @staticmethod
     def validate_comment(form_data):
         is_valid = True
