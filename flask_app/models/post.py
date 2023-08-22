@@ -51,7 +51,11 @@ class Post:
     def get_one(cls, data):
         query = "SELECT * FROM posts WHERE id = %(id)s;"
         results = connectToMySQL(db).query_db(query, data)
-        return cls(results[0])
+        post = cls(results[0])
+        print(results[0]['user_id'])
+        data = {"id": results[0]['user_id']}
+        post.creator = user.User.get_one(data)
+        return post
     def update(cls, data):
         query = "UPDATE posts SET event_name=%(name)s, description=%(description)s, location=%(location)s,date_time=%(date)s, updated_at = NOW() WHERE id = %(id)s;"
         return connectToMySQL(db).query_db(query,data)
