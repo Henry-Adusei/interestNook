@@ -23,6 +23,15 @@ def create_new_post():
     }
     post.Post.save(data)
     return redirect('/dash')
+@app.route('/post/<int:post_id>')
+def show_post(post_id):
+    if 'user_id' not in session:
+        flash("Must login or register")
+        return redirect('/')
+    data = {'id': post_id}
+    return render_template('view_event.html', post = post.Post.get_one(data))
+    
+
 
 @app.route('/posts/edit/<int:posts_id>')
 def edit_post(posts_id):

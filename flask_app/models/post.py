@@ -11,7 +11,7 @@ class Post:
         self.location = data['location']
         self.date_time = data['date_time']
         self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
+        # self.updated_at = data['updated_at']
         self.creator = None
         self.comments = []
         self.likes = []
@@ -27,7 +27,7 @@ class Post:
     
     @classmethod
     def get_all_posts_with_creator(cls):
-        query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time;"
+        query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time DESC;"
         results = connectToMySQL(db).query_db(query)
         all_posts = []
         for row in results:
@@ -39,7 +39,7 @@ class Post:
                 "email": row['email'],
                 "password": row['password'],
                 "created_at": row['users.created_at'],
-                "updated_at": row['users.updated_at']
+                # "updated_at": row['users.updated_at']
             }
             new_creator = user.User(one_post_creator_info)
             one_post.creator = new_creator
@@ -55,8 +55,11 @@ class Post:
     def get_one(cls, data):
         query = "SELECT * FROM posts WHERE posts_id = %(posts_id)s;"
         results = connectToMySQL(db).query_db(query, data)
-        return cls(results[0])
-    
+        post = cls(results[0])
+        print(results[0]['user_id'])
+        data = {"id": results[0]['user_id']}
+        post.creator = user.User.get_one(data)
+        return post
     def update(cls, data):
         query = """
         UPDATE posts 

@@ -1,6 +1,7 @@
 from flask_app import app
 from flask import render_template, redirect, request, session, flash
 from flask_app.models import user, post
+from flask_app.controllers import likes
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
@@ -26,16 +27,26 @@ def create_user():
     session['user_id'] = user_id
     session['first_name'] = request.form['first_name']
     return redirect("/dash")
+
 @app.route("/dash")
 def show_dash():
     if 'user_id' not in session:
         flash("Must login or register.")
         return redirect('/')
+    
     data = {
         "id": session['user_id']
     }
-    print(session['user_id'])
-    return render_template("dashboard.html", user = user.User.get_user_with_posts(data))
+    
+    # Include the like_data dictionary in the context
+    context = {
+        'user': user.User.get_user_with_posts(data),
+        'posts': post.Post.get_all_posts_with_creator(),
+        'like_data': likes.like_data  # Include the like_data in the context
+    }
+
+    return render_template("dashboard.html", **context)
+
 @app.route("/login/user", methods = ["POST"])
 def check_login():
     # see if the username provided exists in the database
