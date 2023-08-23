@@ -1,6 +1,6 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models.comments_model import Comments
+from flask_app.models.comments import Comments
 
 @app.route("INSERT ROUTE HERE")
 def comment_form(id):
