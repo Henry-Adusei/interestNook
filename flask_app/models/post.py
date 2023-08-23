@@ -11,10 +11,10 @@ class Post:
         self.location = data['location']
         self.date_time = data['date_time']
         self.created_at = data['created_at']
-        # self.updated_at = data['updated_at']
+        self.updated_at = data['updated_at']
         self.creator = None
         self.comments = []
-        self.likes = []
+        self.likes = None
 
     @classmethod
     def get_all(cls):
@@ -29,6 +29,8 @@ class Post:
     def get_all_posts_with_creator(cls):
         query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time DESC;"
         results = connectToMySQL(db).query_db(query)
+        query2 = "SELECT COUNT(id) AS likes, post_id FROM likes GROUP by post_id;"
+        results2 = connectToMySQL(db).query_db(query2)
         all_posts = []
         for row in results:
             one_post = cls(row)
@@ -39,10 +41,13 @@ class Post:
                 "email": row['email'],
                 "password": row['password'],
                 "created_at": row['users.created_at'],
-                # "updated_at": row['users.updated_at']
+                "updated_at": row['users.updated_at']
             }
             new_creator = user.User(one_post_creator_info)
             one_post.creator = new_creator
+            # for row2 in results2:
+            #     if(one_post.id == row2['post_id']):
+                    # one_post.likes = row2['likes']
             all_posts.append(one_post)
         return all_posts
     
@@ -56,21 +61,16 @@ class Post:
         query = "SELECT * FROM posts WHERE posts_id = %(posts_id)s;"
         results = connectToMySQL(db).query_db(query, data)
         post = cls(results[0])
-        print(results[0]['user_id'])
         data = {"id": results[0]['user_id']}
         post.creator = user.User.get_one(data)
+        query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {post.id};"
+        results2 = connectToMySQL(db).query_db(query2)
+        print(results2)
+        # if(results2[0]['likes'] != None):
+        #     post.likes = results2[0]['likes']
         return post
     def update(cls, data):
-        query = """
-        UPDATE posts 
-        SET 
-        event_name=%(event_name)s,
-        description=%(description)s,
-        location=%(location)s,
-        date_time=%(date)s,
-        updated_at = NOW()
-        WHERE posts_id = %(posts_id)s;
-        """
+        query = "UPDATE posts SET event_name=%(event_name)s, description=%(description)s, location=%(location)s,date_time=%(date_time)s, updated_at = NOW() WHERE id = %(id)s;"
         return connectToMySQL(db).query_db(query,data)
     
     @classmethod
@@ -78,6 +78,14 @@ class Post:
         query = "DELETE FROM posts WHERE posts_id = %(posts_id)s;"
         return connectToMySQL(db).query_db(query,data)
     
+    @staticmethod
+    def add_like(data):
+        query = "INSERT INTO likes (user_id, post_id) VALUES (%(user_id)s, %(post_id)s);"
+        return connectToMySQL(db).query_db(query,data)
+    @staticmethod
+    def add_rsvp(data):
+        query = "INSERT INTO rsvps (user_id, post_id) VALUES (%(user_id)s, %(post_id)s);"
+        return connectToMySQL(db).query_db(query,data)
     @staticmethod
     def validate_post(data):
         is_valid = True

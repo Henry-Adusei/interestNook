@@ -43,6 +43,7 @@
                                     Time - {{ post.date_time.strftime('%H:%M %p') }}
                                 </p>
                                 <p id="address" class="card-text"><b>Location : </b> {{post.location}} </p>
+                                <p id="address" class="card-text"><b>Likes : </b> {{post.likes}} </p>
                             </div>
                         </div>
                         <div class="text-center mt-3">
@@ -85,10 +86,10 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Add a Comment</h5>
-                                <form action="" method="POST">
+                                <form action="/comment/{{post.id}}/submit" method="POST">
                                     <div class="form-group">
-                                        <label for="commentText">Your Comment</label>
-                                        <textarea class="form-control" id="commentText" name="comment" rows="3" required></textarea>
+                                        <label for="content">Your Comment</label>
+                                        <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit Comment</button>
                                 </form>

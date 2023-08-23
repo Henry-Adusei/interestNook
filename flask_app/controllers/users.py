@@ -1,7 +1,7 @@
 from flask_app import app
 from flask import render_template, redirect, request, session, flash
 from flask_app.models import user, post
-from flask_app.controllers import likes
+# from flask_app.controllers import likes
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
@@ -39,13 +39,13 @@ def show_dash():
     }
     
     # Include the like_data dictionary in the context
-    context = {
-        'user': user.User.get_user_with_posts(data),
-        'posts': post.Post.get_all_posts_with_creator(),
-        'like_data': likes.like_data  # Include the like_data in the context
-    }
+    # context = {
+    #     'user': user.User.get_user_with_posts(data),
+    #     'posts': post.Post.get_all_posts_with_creator(),
+    #     'like_data': likes.like_data  # Include the like_data in the context
+    # }
 
-    return render_template("dashboard.html", **context)
+    return render_template("dashboard.html", user = user.User.get_user_with_posts(data),  posts = post.Post.get_all_posts_with_creator()  )
 
 @app.route("/login/user", methods = ["POST"])
 def check_login():
@@ -54,11 +54,11 @@ def check_login():
     user_in_db = user.User.get_by_email(data)
     # user is not registered in the db
     if not user_in_db:
-        flash("Invalid Email/Password")
+        flash("Invalid Email/Password", "login")
         return redirect("/")
     if not bcrypt.check_password_hash(user_in_db.password, request.form['password']):
         # if we get False after checking the password
-        flash("Invalid Email/Password")
+        flash("Invalid Email/Password", "login")
         return redirect('/')
     # if the passwords matched, we set the user_id into session
     session['user_id'] = user_in_db.id

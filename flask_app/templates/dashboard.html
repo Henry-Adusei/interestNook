@@ -39,14 +39,15 @@
                     </div>
                     {% for post in user.posts %}
                     <div class="card-body">
-                        <p>{{ post.event_name}}</p>
+                        <p>{{ post.event_name}} by {{user.first_name}}</p>
                         <p>{{ post.location}}</p>
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
-                        <a href="#" id="likeButton_{{ post.id }}" class="btn btn-primary" onclick="likePost({{post.id}})">Like</a>
+                        <p>Likes: {{post.likes}}</p>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
                         <a href="#" class="btn btn-primary">Comment</a>
-                        <span id="likeCount_{{ post.id }}">{{ like_data.get(post.id, 0) }}</span> Likes
+                        <a href="/post/edit/{{post.id}}" class="btn btn-primary">Edit</a>
+                        <a href="/post/delete/{{post.id}}" class="btn btn-primary">Delete</a>
                     </div>
                     {% endfor %}
                 </div>
@@ -59,24 +60,26 @@
                     {% for post in posts %}
                     <div class="card-body">
                     {% if post.creator.id != user.id %}
-                        <p>{{ post.event_name}}</p>
+                        <p>{{ post.event_name}} by {{post.creator.first_name}}</p>
                         <p>{{ post.location}}</p>
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
-                        <a href="#" class="btn btn-success">Join Event</a>
+                        <p>Likes: {{post.likes}}</p>
+                        <a href="/join/{{post.id}}" class="btn btn-success">Join Event</a>
                         <a href="#" class="btn btn-danger">Leave</a>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
+                        <a href = "/like/{{post.id}}" class="btn btn-primary">Like</a>
                     {% endif %}
                     {% endfor %}
                     </div>
                 </div>
-                <a href="#" class="btn btn-secondary mt-3">RSVP'd Events</a>
+                <a href="/rsvps/{{user.id}}" class="btn btn-secondary mt-3">RSVP'd Events</a>
             </div>
         </div>
     </div>
         </div>
     </div>
-    <script>
+    <!-- <script>
         // JavaScript function to handle the "Like" button click
         function likePost(postId) {
             fetch(`/like/${postId}`, { method: 'POST' })
@@ -91,6 +94,6 @@
                 })
                 .catch(error => console.error('Error liking post:', error));
         }
-    </script>
+    </script> -->
 </body>
 </html>
