@@ -1,7 +1,7 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 
-db = 'InterestNook.mwb'
+db = "interestnook"
 
 class Comments:
     def __init__(self, data):
