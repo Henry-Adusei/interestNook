@@ -49,7 +49,7 @@ class User:
             if(row['posts.id'] != None):
                 query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {new_post.id};"
                 results2 = connectToMySQL(db).query_db(query2)
-                new_post.likes = results2[0]['likes']
+                # new_post.likes = results2[0]['likes']
             user.posts.append(new_post)
         return user
     @classmethod
@@ -69,22 +69,29 @@ class User:
         if len(result) < 1:
             return False
         return cls(result[0])
+    
+    @classmethod
+    def get_by_id(cls,data):
+        query = "SELECT * FROM users WHERE id = %(id)s;"
+        results = connectToMySQL(db).query_db(query,data)
+        return cls(results[0])
+
     @staticmethod
     def validate_user(user, users):
         is_valid = True # we assume this is true
         for u in users:
             if u.first_name == user['first_name'] and u.last_name == user['last_name']:
-                flash("You are already registered")
+                flash("You are already registered", "registration")
                 is_valid = False
                 break
         if len(user['first_name']) < 3:
-            flash("First name must be at least 3 characters.")
+            flash("First name must be at least 3 characters.", "registration")
             is_valid = False
         if len(user['last_name']) < 3:
-            flash("Last name must be at least 3 characters.")
+            flash("Last name must be at least 3 characters.", "registration")
             is_valid = False
         if not EMAIL_REGEX.match(user['email']): 
-            flash("Invalid email address!")
+            flash("Invalid email address!", "registration")
             is_valid = False
         '''password = user['password']
         password_list = [*password]
@@ -102,14 +109,14 @@ class User:
             flash("Password must have at least one capital letter and one number")
             is_valid = False'''
         if len(user['password']) < 8:
-            flash("Password must be at least 8 characters long")
+            flash("Password must be at least 8 characters long", "registration")
             is_valid = False
         if user['password'] != user['confirm']:
-            flash("Invalid password")
+            flash("Invalid password", "registration")
             is_valid = False
         for u in users:
             if user['email'] == u.email:
-                flash("Email is already taken.  Please use another one")
+                flash("Email is already taken.  Please use another one", "registration")
                 is_valid = False
                 break
         return is_valid
