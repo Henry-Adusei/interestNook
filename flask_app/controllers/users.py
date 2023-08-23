@@ -14,9 +14,7 @@ def show_login_reg():
 def create_user():
     print(request.form)
     users = user.User.get_all()
-    print(users)
     if not user.User.validate_user(request.form, users):
-        print("something went horribly wrong")
         return redirect('/')
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     data = {

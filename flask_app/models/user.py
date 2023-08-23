@@ -91,7 +91,7 @@ class User:
         return cls(result[0])
     @staticmethod
     def validate_user(user, users):
-        is_valid = True # we assume this is true
+        is_valid = True
         for u in users:
             if u.first_name == user['first_name'] and u.last_name == user['last_name']:
                 flash("You are already registered")
