@@ -53,6 +53,9 @@ class User:
             user.posts.append(new_post)
         return user
     @classmethod
+    def get_user_with_rsvps():
+        return 1
+    @classmethod
     def save(cls, data):
         query = "INSERT INTO users ( first_name, last_name, email, password) VALUES (%(fname)s, %(lname)s, %(email)s, %(password)s);"
         return connectToMySQL(db).query_db(query, data)
@@ -75,16 +78,20 @@ class User:
         for u in users:
             if u.first_name == user['first_name'] and u.last_name == user['last_name']:
                 flash("You are already registered")
+                print("You are already registered")
                 is_valid = False
                 break
         if len(user['first_name']) < 3:
             flash("First name must be at least 3 characters.")
+            print("First name must be at least 3 characters.")
             is_valid = False
         if len(user['last_name']) < 3:
             flash("Last name must be at least 3 characters.")
+            print("Last name must be at least 3 characters.")
             is_valid = False
         if not EMAIL_REGEX.match(user['email']): 
             flash("Invalid email address!")
+            print("Invalid email address!")
             is_valid = False
         '''password = user['password']
         password_list = [*password]
@@ -103,13 +110,16 @@ class User:
             is_valid = False'''
         if len(user['password']) < 8:
             flash("Password must be at least 8 characters long")
+            print("Password must be at least 8 characters long")
             is_valid = False
         if user['password'] != user['confirm']:
             flash("Invalid password")
+            print("Invalid password")
             is_valid = False
         for u in users:
             if user['email'] == u.email:
                 flash("Email is already taken.  Please use another one")
+                print("Email is already taken.  Please use another one")
                 is_valid = False
                 break
         return is_valid

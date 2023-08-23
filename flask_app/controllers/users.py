@@ -1,7 +1,7 @@
 from flask_app import app
 from flask import render_template, redirect, request, session, flash
 from flask_app.models import user, post
-from flask_app.controllers import likes
+# from flask_app.controllers import likes
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt(app)
 
@@ -14,7 +14,9 @@ def show_login_reg():
 def create_user():
     print(request.form)
     users = user.User.get_all()
+    print(users)
     if not user.User.validate_user(request.form, users):
+        print("something went horribly wrong")
         return redirect('/')
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     data = {
@@ -39,13 +41,13 @@ def show_dash():
     }
     
     # Include the like_data dictionary in the context
-    context = {
-        'user': user.User.get_user_with_posts(data),
-        'posts': post.Post.get_all_posts_with_creator(),
-        'like_data': likes.like_data  # Include the like_data in the context
-    }
+    # context = {
+    #     'user': user.User.get_user_with_posts(data),
+    #     'posts': post.Post.get_all_posts_with_creator(),
+    #     'like_data': likes.like_data  # Include the like_data in the context
+    # }
 
-    return render_template("dashboard.html", **context)
+    return render_template("dashboard.html", user = user.User.get_user_with_posts(data),  posts = post.Post.get_all_posts_with_creator()  )
 
 @app.route("/login/user", methods = ["POST"])
 def check_login():
