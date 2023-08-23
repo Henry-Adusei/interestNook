@@ -45,9 +45,9 @@ class Post:
             }
             new_creator = user.User(one_post_creator_info)
             one_post.creator = new_creator
-            # for row2 in results2:
-            #     if(one_post.id == row2['post_id']):
-                    # one_post.likes = row2['likes']
+            for row2 in results2:
+                if(one_post.id == row2['post_id']):
+                    one_post.likes = row2['likes']
             all_posts.append(one_post)
         return all_posts
     
@@ -58,7 +58,7 @@ class Post:
     
     @classmethod
     def get_one(cls, data):
-        query = "SELECT * FROM posts WHERE posts_id = %(posts_id)s;"
+        query = "SELECT * FROM posts WHERE id = %(id)s;"
         results = connectToMySQL(db).query_db(query, data)
         post = cls(results[0])
         data = {"id": results[0]['user_id']}
@@ -66,11 +66,12 @@ class Post:
         query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {post.id};"
         results2 = connectToMySQL(db).query_db(query2)
         print(results2)
-        # if(results2[0]['likes'] != None):
-        #     post.likes = results2[0]['likes']
+        if(results2[0]['likes'] != None):
+            post.likes = results2[0]['likes']
         return post
+    @classmethod
     def update(cls, data):
-        query = "UPDATE posts SET event_name=%(event_name)s, description=%(description)s, location=%(location)s,date_time=%(date_time)s, updated_at = NOW() WHERE id = %(id)s;"
+        query = "UPDATE posts SET event_name=%(name)s, description=%(description)s, location=%(location)s,date_time=%(date)s, updated_at = NOW() WHERE id = %(id)s;"
         return connectToMySQL(db).query_db(query,data)
     
     @classmethod
@@ -85,6 +86,10 @@ class Post:
     @staticmethod
     def add_rsvp(data):
         query = "INSERT INTO rsvps (user_id, post_id) VALUES (%(user_id)s, %(post_id)s);"
+        return connectToMySQL(db).query_db(query,data)
+    @staticmethod
+    def remove_rsvp(data):
+        query = "DELETE FROM rsvps WHERE user_id = %(user_id)s AND post_id = %(post_id)s;"
         return connectToMySQL(db).query_db(query,data)
     @staticmethod
     def validate_post(data):

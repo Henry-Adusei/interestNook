@@ -37,8 +37,7 @@
                         <p class="card-text">{{ post.description }}</p>
                         <p class="card-text">{{ post.location }}</p>
                         <p class="card-text">{{ post.date_time }}</p>
-                        <a href="#" class="btn btn-primary">Update</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="/leave/{{post.id}}/True" class="btn btn-danger">Leave</a>
                     </div>
                 </div>
                 {% endfor %}

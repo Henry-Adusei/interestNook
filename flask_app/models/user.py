@@ -49,7 +49,7 @@ class User:
             if(row['posts.id'] != None):
                 query2 = f"SELECT COUNT(id) AS likes, post_id FROM likes WHERE post_id = {new_post.id};"
                 results2 = connectToMySQL(db).query_db(query2)
-                # new_post.likes = results2[0]['likes']
+                new_post.likes = results2[0]['likes']
             user.posts.append(new_post)
         return user
     @classmethod
@@ -68,8 +68,9 @@ class User:
                 "updated_at": row['posts.updated_at']
             }
             new_post = post.Post(post_data)
-            creator_data = {'id': row['posts.user_id']}
-            new_post.creator = cls.get_one(creator_data)
+            if(row['posts.user_id'] != None):
+                creator_data = {'id': row['posts.user_id']}
+                new_post.creator = cls.get_one(creator_data)
             user.posts.append(new_post)
         return user
     @classmethod

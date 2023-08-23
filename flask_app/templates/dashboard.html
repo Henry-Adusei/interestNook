@@ -37,6 +37,11 @@
                     <div class="card-header">
                         Your Events
                     </div>
+                    {% if user.posts[0].id == None %}
+                    <div class = "card-body">
+                        <p>No Events create yet!</p>
+                    </div>
+                    {% else %}
                     {% for post in user.posts %}
                     <div class="card-body">
                         <p>{{ post.event_name}} by {{user.first_name}}</p>
@@ -50,6 +55,7 @@
                         <a href="/post/delete/{{post.id}}" class="btn btn-primary">Delete</a>
                     </div>
                     {% endfor %}
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-6">
@@ -66,7 +72,7 @@
                         <p>{{post.date_time}}</p>
                         <p>Likes: {{post.likes}}</p>
                         <a href="/join/{{post.id}}" class="btn btn-success">Join Event</a>
-                        <a href="#" class="btn btn-danger">Leave</a>
+                        <a href="/leave/{{post.id}}/False" class="btn btn-danger">Leave</a>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
                         <a href = "/like/{{post.id}}" class="btn btn-primary">Like</a>
                     {% endif %}
