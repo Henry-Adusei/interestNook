@@ -5,7 +5,7 @@ import datetime
 db = "interestnook"
 class Post:
     def __init__(self, data):
-        self.posts_id = data['posts_id']
+        self.id = data['id']
         self.event_name = data['event_name']
         self.description = data['description']
         self.location = data['location']
