@@ -23,23 +23,25 @@
         <a class="navbar-brand">InterestNook</a>
         <h2>{{user.first_name}}'s Events</h2>
         <form class="form-inline my-2 my-lg-0">
-            <a href="/dashboard" class="btn btn-outline-warning mr-3">Dashboard</a>
-            <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
+            <a href="/dash" class="btn btn-outline-warning mr-3">Dashboard</a>
+            <a href="/clear" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
         </form>
     </nav>
     <div id="intro" class="bg-image shadow-2-strong">
         <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
             <div class="container">
-                {{% for event in events %}}
+                {% for post in user.posts %}
                 <div class="card mt-4">
                     <div class="card-body">
-                        <h5 class="card-title">{{ event.title }}</h5>
-                        <p class="card-text">{{ event.description }}</p>
+                        <h5 class="card-title">{{ post.event_name }} by {{post.creator.first_name}}</h5>
+                        <p class="card-text">{{ post.description }}</p>
+                        <p class="card-text">{{ post.location }}</p>
+                        <p class="card-text">{{ post.date_time }}</p>
                         <a href="#" class="btn btn-primary">Update</a>
                         <a href="#" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
-                {{% endfor %}}
+                {% endfor %}
             </div>
         </div>
     </div>
