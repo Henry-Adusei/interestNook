@@ -13,9 +13,9 @@ def show_login_reg():
 @app.route('/register/user', methods = ['POST'])
 def create_user():
     print(request.form)
-    users = user.User.get_all()
-    if not user.User.validate_user(request.form, users):
-        return redirect('/')
+    # users = user.User.get_all()
+    # # if not user.User.validate_user(request.form, users):
+    # #     return redirect('/')
     pw_hash = bcrypt.generate_password_hash(request.form['password'])
     data = {
         "fname": request.form['first_name'],
