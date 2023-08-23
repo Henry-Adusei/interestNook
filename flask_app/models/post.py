@@ -24,6 +24,7 @@ class Post:
         for post in results:
             posts.append(cls(post))
         return posts
+    
     @classmethod
     def get_all_posts_with_creator(cls):
         query = "SELECT * FROM posts JOIN users ON posts.user_id = users.id ORDER BY date_time DESC;"
@@ -49,13 +50,15 @@ class Post:
                     # one_post.likes = row2['likes']
             all_posts.append(one_post)
         return all_posts
+    
     @classmethod
     def save(cls, data):
         query = "INSERT INTO posts (event_name, description, location, date_time, user_id) VALUES (%(name)s, %(description)s, %(location)s, %(date)s, %(user_id)s);"
         return connectToMySQL(db).query_db(query, data)
+    
     @classmethod
     def get_one(cls, data):
-        query = "SELECT * FROM posts WHERE id = %(id)s;"
+        query = "SELECT * FROM posts WHERE posts_id = %(posts_id)s;"
         results = connectToMySQL(db).query_db(query, data)
         post = cls(results[0])
         data = {"id": results[0]['user_id']}
@@ -69,10 +72,12 @@ class Post:
     def update(cls, data):
         query = "UPDATE posts SET event_name=%(event_name)s, description=%(description)s, location=%(location)s,date_time=%(date_time)s, updated_at = NOW() WHERE id = %(id)s;"
         return connectToMySQL(db).query_db(query,data)
+    
     @classmethod
     def destroy(cls,data):
-        query = "DELETE FROM posts WHERE id = %(id)s;"
+        query = "DELETE FROM posts WHERE posts_id = %(posts_id)s;"
         return connectToMySQL(db).query_db(query,data)
+    
     @staticmethod
     def add_like(data):
         query = "INSERT INTO likes (user_id, post_id) VALUES (%(user_id)s, %(post_id)s);"
