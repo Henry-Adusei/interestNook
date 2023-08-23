@@ -22,14 +22,14 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand">InterestNook</a>
         <form class="form-inline my-2 my-lg-0">
-            <a href="/dashboard" class="btn btn-outline-warning mr-3">Dashboard</a>
+            <a href="/dash" class="btn btn-outline-warning mr-3">Dashboard</a>
             <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
         </form>
     </nav>
     <div id="intro" class="bg-image shadow-2-strong">
         <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
             <div class="container">
-                <!-- <div>
+                <div>
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     {% for message in messages %}
@@ -37,7 +37,7 @@
                     {% endfor %}
                     {% endif %}
                     {% endwith %}
-                </div> -->
+                </div>
                 <form action="/create/post" method="post"
                     class="card col-5 mx-auto my-5 bg-light text-white p-3">
                     <div class="form-group mb-3">

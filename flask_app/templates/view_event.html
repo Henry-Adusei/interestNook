@@ -22,8 +22,8 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand">InterestNook</a>
         <form class="form-inline my-2 my-lg-0">
-            <a href="/dashboard" class="btn btn-outline-warning mr-3">Dashboard</a>
-            <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
+            <a href="/dash" class="btn btn-outline-warning mr-3">Dashboard</a>
+            <a href="/clear" class="btn btn-outline-danger my-2 my-sm-0">Logout</a>
         </form>
     </nav>
     <div id="intro" class="bg-image shadow-2-strong">
@@ -33,20 +33,21 @@
                     <div class="col-md-6 mx-auto">
                         <div class="card mx-auto text-center">
                             <div class="card-body">
-                                <h4 class="card-title">{{event.event_name}}</h4>
-                                <h6 class="card-subtitle mb-2 text-muted">Hosted by: {{event.creator.first_name}}</h6>
+                                <h4 class="card-title">{{post.event_name}}</h4>
+                                <h6 class="card-subtitle mb-2 text-muted">Hosted by: {{post.creator.first_name}}</h6>
                                 <p class="card-text">
-                                    <span class="font-weight-bold">Description:</span> {{event.description}}
+                                    <span class="font-weight-bold">Description:</span> {{post.description}}
                                 </p>
                                 <p class="card-text">
-                                    Date - {{ event.date_time.strftime('%m/%d/%Y') }}<br>
-                                    Time - {{ event.date_time.strftime('%H:%M %p') }}
+                                    Date - {{ post.date_time.strftime('%m/%d/%Y') }}<br>
+                                    Time - {{ post.date_time.strftime('%H:%M %p') }}
                                 </p>
-                                <p id="address" class="card-text"><b>Location : </b> {{event.location}} </p>
+                                <p id="address" class="card-text"><b>Location : </b> {{post.location}} </p>
+                                <p id="address" class="card-text"><b>Likes : </b> {{post.likes}} </p>
                             </div>
                         </div>
                         <div class="text-center mt-3">
-                            <form action="{{ url_for('view_event', event_id=event.id) }}" method="POST">
+                            <form action="" method="POST">
                                 <button type="submit" class="btn btn-primary" name="rsvp">RSVP</button>
                             </form>
                         </div>
@@ -69,7 +70,7 @@
                 <div class="row mt-5">
                     <div class="col-md-6 mx-auto">
                         <h4 class="text-white">Comments</h4>
-                        {% for comment in event.comments %}
+                        {% for comment in post.comments %}
                         <div class="card mb-3">
                             <div class="card-body">
                                 <p class="card-text">{{ comment.user }}: {{ comment.text }}</p>
@@ -85,7 +86,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Add a Comment</h5>
-                                <form action="{{ url_for('submit_comment', event_id=event.id) }}" method="POST">
+                                <form action="" method="POST">
                                     <div class="form-group">
                                         <label for="commentText">Your Comment</label>
                                         <textarea class="form-control" id="commentText" name="comment" rows="3" required></textarea>
