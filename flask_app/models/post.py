@@ -77,6 +77,10 @@ class Post:
         query = "INSERT INTO likes (user_id, post_id) VALUES (%(user_id)s, %(post_id)s);"
         return connectToMySQL(db).query_db(query,data)
     @staticmethod
+    def add_rsvp(data):
+        query = "INSERT INTO rsvps (user_id, post_id) VALUES (%(user_id)s, %(post_id)s);"
+        return connectToMySQL(db).query_db(query,data)
+    @staticmethod
     def validate_post(data):
         is_valid = True
         if len(data['name']) < 2:

@@ -1,7 +1,7 @@
 from flask_app import app
 from flask_app.controllers import users, posts, likes
 
-#app.register_blueprint(likes.likes_bp)
+app.register_blueprint(likes.likes_bp)
 
 
 # ...server.py

@@ -53,8 +53,25 @@ class User:
             user.posts.append(new_post)
         return user
     @classmethod
-    def get_user_with_rsvps():
-        return 1
+    def get_user_with_rsvps(cls,data):
+        query = "SELECT * FROM users LEFT JOIN rsvps ON rsvps.user_id = users.id LEFT JOIN posts ON rsvps.post_id = posts.id WHERE users.id = %(id)s ORDER BY date_time DESC;"
+        results = connectToMySQL(db).query_db(query,data)
+        user = cls(results[0])
+        for row in results:
+            post_data = {
+                "id": row['posts.id'],
+                "event_name": row['event_name'],
+                "description": row['description'],
+                "location": row['location'],
+                "date_time": row['date_time'],
+                "created_at": row['posts.created_at'],
+                "updated_at": row['posts.updated_at']
+            }
+            new_post = post.Post(post_data)
+            creator_data = {'id': row['posts.user_id']}
+            new_post.creator = cls.get_one(creator_data)
+            user.posts.append(new_post)
+        return user
     @classmethod
     def save(cls, data):
         query = "INSERT INTO users ( first_name, last_name, email, password) VALUES (%(fname)s, %(lname)s, %(email)s, %(password)s);"

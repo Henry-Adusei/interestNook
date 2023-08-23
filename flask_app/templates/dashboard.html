@@ -65,7 +65,7 @@
                         <p>{{ post.description}}</p>
                         <p>{{post.date_time}}</p>
                         <p>Likes: {{post.likes}}</p>
-                        <a href="#" class="btn btn-success">Join Event</a>
+                        <a href="/join/{{post.id}}" class="btn btn-success">Join Event</a>
                         <a href="#" class="btn btn-danger">Leave</a>
                         <a href="/post/{{post.id}}" class="btn btn-primary">View</a>
                         <a href = "/like/{{post.id}}" class="btn btn-primary">Like</a>
@@ -73,7 +73,7 @@
                     {% endfor %}
                     </div>
                 </div>
-                <a href="#" class="btn btn-secondary mt-3">RSVP'd Events</a>
+                <a href="/rsvps/{{user.id}}" class="btn btn-secondary mt-3">RSVP'd Events</a>
             </div>
         </div>
     </div>
