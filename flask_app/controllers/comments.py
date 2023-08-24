@@ -6,7 +6,7 @@ from flask_app.models import comment, post
 def submit_comment(post_id):
     if 'user_id' not in session:
         return redirect('/')
-    if not Comments.validate_comment(request.form):
+    if not comment.Comments.validate_comment(request.form):
         return redirect(f'/comment/{post_id}')
     data = {
         'user_id': session['user_id'],

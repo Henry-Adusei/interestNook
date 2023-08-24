@@ -84,9 +84,10 @@ class Post:
             comment_creator_info = {
                 "id": row['users.id']
             }
-            new_comment = comment.Comments(comment_data)
-            new_comment.creator = user.User.get_one(comment_creator_info)
-            post.comments.append(new_comment)
+            if (row['comments.id'] != None):
+                new_comment = comment.Comments(comment_data)
+                new_comment.creator = user.User.get_one(comment_creator_info)
+                post.comments.append(new_comment)
         return post
 
 
