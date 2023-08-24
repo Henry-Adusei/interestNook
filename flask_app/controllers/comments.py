@@ -31,5 +31,9 @@ def show_comments(post_id):
     if 'user_id' not in session:
         return redirect('/clear')
     data = {'id': post_id}
-    return render_template('comments.html', post = post.Post.get_one_post_with_comments_and_user(data))
+    return render_template('comments2.html', post = post.Post.get_one_post_with_comments_and_user(data))
+@app.route("/comment/<int:post_id>/delete/<int:comment_id>")
+def delete_a_comment(comment_id, post_id):
+    comment.Comments.delete_comment({'id': comment_id})
+    return redirect(f'/comments/{post_id}')
 

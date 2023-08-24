@@ -3,7 +3,7 @@ from flask import flash
 from flask_app.models import user, comment
 from datetime import datetime
 db = "interestnook"
-current_date = datetime.now()
+
 
 class Post:
     def __init__(self, data):
@@ -122,6 +122,7 @@ class Post:
     @staticmethod
     def validate_post(data):
         is_valid = True
+        print(data['date_time'])
         if len(data['name']) < 2:
             flash("Event name must be at least 2 characters.")
             is_valid = False
@@ -131,8 +132,14 @@ class Post:
         if len(data['location']) < 2:
             flash("Location must be at least 2 characters")
             is_valid = False
-        
-        if len(data['date_time']) < 1:
+        if len(data['date_time']) < 1 or data['date_time'] == None:
             flash("Date must exist!")
+            is_valid = False
+        current_date = datetime.now()
+        new_date = datetime.strptime(data['date_time'], '%Y-%m-%dT%H:%M')
+        print(new_date)
+        if new_date < current_date:
+            flash("Date cannot be earlier than current date")
+            is_valid = False
         return is_valid
         

@@ -2,13 +2,14 @@ from flask_app import app
 from flask import render_template, redirect, request, session, flash
 from flask_app.models import user, post, comment
 from flask_app.controllers import users
+from datetime import datetime
 
 @app.route('/posts/new')
 def new_post():
     if 'user_id' not in session:
         flash("Must login or register")
         return redirect('/')
-    return render_template('create_event.html')
+    return render_template('create_event.html', current_date = datetime.now())
 
 @app.route('/create/post', methods = ['POST'])
 def create_new_post():
@@ -18,7 +19,7 @@ def create_new_post():
         'name': request.form['name'],
         'description': request.form['description'],
         'location': request.form['location'],
-        'date': request.form['date'],
+        'date': request.form['date_time'],
         'user_id': session['user_id']
     }
     post.Post.save(data)
