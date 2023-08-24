@@ -31,7 +31,7 @@
         <div class="mask d-flex align-items-center h-100" style="background-color: rgba(0, 0, 0, 0.8);">
             <div class="container">
                 {% for post in user.posts %}
-                <div class="card mt-4">
+                <div class="card mt-4 w-50 mx-auto">
                     <div class="card-body">
                         <h5 class="card-title">{{ post.event_name }} by {{post.creator.first_name}}</h5>
                         <p class="card-text">{{ post.description }}</p>
