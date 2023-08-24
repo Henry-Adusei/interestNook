@@ -1,8 +1,10 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
 from flask_app.models import user, comment
-import datetime
+from datetime import datetime
 db = "interestnook"
+current_date = datetime.now()
+
 class Post:
     def __init__(self, data):
         self.id = data['id']
@@ -129,5 +131,8 @@ class Post:
         if len(data['location']) < 2:
             flash("Location must be at least 2 characters")
             is_valid = False
+        
+        if len(data['date_time']) < 1:
+            flash("Date must exist!")
         return is_valid
         

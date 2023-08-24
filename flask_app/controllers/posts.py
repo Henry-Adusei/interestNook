@@ -85,7 +85,7 @@ def process_edit_post(post_id):
     if "user_id" not in session:
         return redirect("/clear")
     if not post.Post.validate_post(request.form):
-        return redirect(f'/posts/edit/{post_id}')
+        return redirect(f'/post/edit/{post_id}')
     
     data = {
         'id': post_id,
