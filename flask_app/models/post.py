@@ -97,7 +97,11 @@ class Post:
     
     @classmethod
     def destroy(cls,data):
-        query = "DELETE FROM posts WHERE posts_id = %(posts_id)s;"
+        query = "DELETE FROM posts WHERE id = %(id)s;"
+        query2 = "DELETE FROM likes WHERE post_id = %(id)s;"
+        query3 = "DELETE FROM rsvps WHERE post_id = %(id)s;"
+        connectToMySQL(db).query_db(query2, data)
+        connectToMySQL(db).query_db(query3, data)
         return connectToMySQL(db).query_db(query,data)
     
     @staticmethod

@@ -74,7 +74,7 @@ def edit_post(posts_id):
     if 'user_id' not in session:
         return redirect('/')
     data={
-        'posts_id':posts_id
+        'id':posts_id
     }
     one_post=post.Post.get_one(data)
     user_id={'id':session['user_id']}
