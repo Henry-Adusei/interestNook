@@ -70,6 +70,7 @@
                 <div class="row mt-5">
                     <div class="col-md-6 mx-auto">
                         <h4 class="text-white">Comments</h4>
+                        <h5><a href="/comments/{{post.id}}">See Comments</a></h5>
                         {% for comment in post.comments %}
                         <div class="card mb-3">
                             <div class="card-body">
@@ -86,7 +87,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">Add a Comment</h5>
-                                <form action="/comment/{{post.id}}/submit" method="POST">
+                                <form action="/comment/{{post.id}}/submit" method="post">
                                     <div class="form-group">
                                         <label for="content">Your Comment</label>
                                         <textarea class="form-control" id="content" name="content" rows="3" required></textarea>

@@ -31,10 +31,19 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="card bg-light mb-3" style="max-width: 18rem;">
-                        <div class="card-header">{{user.id}}</div>
+                        <div class="card-header">{{post.event_name}}</div>
+                            <div class = "card-body">
+                                <p>{{post.description}}</p>
+                                <p>{{post.location}}</p>
+                                <p>{{post.date_time}}</p>
+                            </div>
+                            <br>
+                        {% for comment in post.comments %}
+                        <div class = "card-header">{{comment.creator.first_name}}</div>
                         <div class="card-body">
-                            <p class="card-text">{{comment.id}} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi ratione doloremque eveniet, recusandae minima perspiciatis voluptatum, beatae praesentium expedita ipsum quam ducimus nihil quos vitae id consectetur. Odit, fugiat! Nihil?</p>
+                            <p>{{comment.content}}</p>
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

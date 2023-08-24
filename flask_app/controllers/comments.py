@@ -1,12 +1,11 @@
 from flask_app import app
 from flask import render_template, redirect, request, session
-from flask_app.models.comment import Comments
-from flask_app.models.post import Post
+from flask_app.models import comment, post
 
 @app.route("/comment/<int:post_id>/submit", methods = ['POST'])
 def submit_comment(post_id):
     if 'user_id' not in session:
-        return redirect('/clear')
+        return redirect('/')
     if not Comments.validate_comment(request.form):
         return redirect(f'/comment/{post_id}')
     data = {
@@ -14,7 +13,7 @@ def submit_comment(post_id):
         'post_id': post_id,
         'content' : request.form['content'],
     }
-    Comments.add_comment(data)
+    comment.Comments.add_comment(data)
     print('MADE IT HERE####################################')
     return redirect('/dash')
 
@@ -27,4 +26,10 @@ def delete_comment(comment_id):
     }
     Comments.delete_comment(data)
     return redirect('/dash', comment = Comments.get_comment({'id':comment_id}))
+@app.route('/comments/<int:post_id>')
+def show_comments(post_id):
+    if 'user_id' not in session:
+        return redirect('/clear')
+    data = {'id': post_id}
+    return render_template('comments.html', post = post.Post.get_one_post_with_comments_and_user(data))
 

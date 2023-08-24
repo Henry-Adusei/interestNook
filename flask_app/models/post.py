@@ -1,6 +1,6 @@
 from flask_app.config.mysqlconnection import connectToMySQL
 from flask import flash
-from flask_app.models import user
+from flask_app.models import user, comment
 import datetime
 db = "interestnook"
 class Post:
@@ -69,6 +69,27 @@ class Post:
         if(results2[0]['likes'] != None):
             post.likes = results2[0]['likes']
         return post
+    @classmethod
+    def get_one_post_with_comments_and_user(cls,data):
+        query = "SELECT * FROM posts LEFT JOIN comments ON posts.id = comments.post_id LEFT JOIN users ON users.id = comments.user_id WHERE posts.id = %(id)s;"
+        results = connectToMySQL(db).query_db(query, data)
+        post = cls(results[0])
+        for row in results:
+            comment_data = {
+                'id': row['comments.id'],
+                'content': row['content'],
+                'created_at': row['comments.created_at'],
+                'updated_at': row['comments.updated_at']
+            }
+            comment_creator_info = {
+                "id": row['users.id']
+            }
+            new_comment = comment.Comments(comment_data)
+            new_comment.creator = user.User.get_one(comment_creator_info)
+            post.comments.append(new_comment)
+        return post
+
+
     @classmethod
     def update(cls, data):
         query = "UPDATE posts SET event_name=%(name)s, description=%(description)s, location=%(location)s,date_time=%(date)s, updated_at = NOW() WHERE id = %(id)s;"
