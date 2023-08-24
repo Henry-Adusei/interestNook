@@ -23,6 +23,7 @@ def create_new_post():
     }
     post.Post.save(data)
     return redirect('/dash')
+
 @app.route('/post/<int:post_id>')
 def show_post(post_id):
     if 'user_id' not in session:
@@ -30,6 +31,7 @@ def show_post(post_id):
         return redirect('/')
     data = {'id': post_id}
     return render_template('view_event.html', post = post.Post.get_one(data))
+
 @app.route('/like/<int:post_id>')
 def add_like(post_id):
     if 'user_id' not in session:
@@ -38,6 +40,7 @@ def add_like(post_id):
     data = {'user_id': session['user_id'], 'post_id': post_id}
     post.Post.add_like(data)
     return redirect('/dash')
+
 @app.route('/rsvps/<int:user_id>')
 def show_rsvps(user_id):
     if 'user_id' not in session:
@@ -48,6 +51,7 @@ def show_rsvps(user_id):
     #     return redirect('/dash')
     data = {'id': user_id}
     return render_template('your_events.html', user = user.User.get_user_with_rsvps(data))
+
 @app.route('/join/<int:post_id>')
 def add_rsvp(post_id):
     if 'user_id' not in session:
@@ -57,6 +61,7 @@ def add_rsvp(post_id):
     id = session['user_id']
     post.Post.add_rsvp(data)
     return redirect(f'/rsvps/{id}')
+
 @app.route('/leave/<int:post_id>/<dash>')
 def leave_rsvp(post_id, dash):
     if 'user_id' not in session:
@@ -69,6 +74,7 @@ def leave_rsvp(post_id, dash):
         return redirect(f'/rsvps/{id}')
     else:
         return redirect('/dash')
+    
 @app.route('/post/edit/<int:posts_id>')
 def edit_post(posts_id):
     if 'user_id' not in session:
@@ -113,7 +119,6 @@ def delete_post(post_id):
     post.Post.destroy({'id': post_id})
     return redirect('/dash')
 
-
 @app.route('/update/<int:posts_id>',methods=['POST'])
 def update(posts_id):
     if not post.Post.validations(request.form):
@@ -128,6 +133,7 @@ def update(posts_id):
     post.Post.update(data)
     return redirect('/dash')
     
+
 
 
 
